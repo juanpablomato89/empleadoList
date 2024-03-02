@@ -1,38 +1,10 @@
 <div class="container mt-3">
-  <div class="card">
-    <div class="card-body">
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="sexo"
-          id="todos"
-          value="Masculino"
-        />
-        <label class="form-check-label" for="todos">Todos(5)</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="sexo"
-          id="femenino"
-          value="Femenino"
-        />
-        <label class="form-check-label" for="femenino">Femenino</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="sexo"
-          id="masculino"
-          value="Masculino"
-        />
-        <label class="form-check-label" for="masculino">Masculino</label>
-      </div>
-    </div>
-  </div>
+  <app-count-empleados
+    [todos]="obtenerTotalEmpleados()"
+    [femenino]="obtenerTotalFemeninos()"
+    [masculino]="obtenerTotalMasculinos()"
+    (eventRadioButtonEmit)="radioButonSeleccionadoChange($event)"
+  ></app-count-empleados>
   <div class="card mt-3">
     <div class="card-body">
       <table class="table">
@@ -46,13 +18,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Juan</td>
-            <td>Perez</td>
-            <td>Masculino</td>
-            <td>5000</td>
-          </tr>
+          <ng-container *ngFor="let empleado of listEmpleados">
+            <tr
+              *ngIf="
+                radioButonSeleccionado === 'Todos' ||
+                radioButonSeleccionado === empleado.sexo
+              "
+            >
+              <td>{{ empleado.legajo }}</td>
+              <td>{{ empleado.nombre }}</td>
+              <td>{{ empleado.apellido }}</td>
+              <td>{{ empleado.sexo }}</td>
+              <td>{{ empleado.salario | currency }}</td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>
